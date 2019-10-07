@@ -7,14 +7,10 @@ public class PlayerController : MonoBehaviour
     private Animator anim;
     private bool atk1 = false;
     private bool atk2 = false;
+    public int ataque = 0;
     private int MiTurno = 1;
-    public int VidaJugador = 100;
+    //public int exp = 100;
     public EnemyController Enemigo;
-
-
-
-    //private Vector3 PosicionOriginal;
-
     private int atkprocess = -1;
 
     void Start()
@@ -22,7 +18,6 @@ public class PlayerController : MonoBehaviour
         anim = GetComponent<Animator>();
         //PosicionOriginal = transform.position;
     }
-
     void FixedUpdate()
     {
  
@@ -36,22 +31,49 @@ public class PlayerController : MonoBehaviour
                 anim.SetBool("ATK1", atk1);
                 anim.SetBool("ATK2", atk2);
             }
-            if(Input.GetKeyDown(KeyCode.Space) && atkprocess == -1)
+            if(ataque == 1 && atkprocess == -1 && GameController.gameController.ExpJugador >= 100)
             {
                 atk1 = true;
                 anim.SetBool("ATK1", atk1);  
-                Enemigo.ReducirVida(10);     
+                Enemigo.ReducirVida(25);
+                Reducir_Aumentar_Exp(-100);     
             }
-            if(Input.GetKeyDown(KeyCode.Q) && atkprocess == -1)
+            if(ataque ==2 && atkprocess == -1 && GameController.gameController.ExpJugador >= 200)
+            {
+                atk1 = true;
+                anim.SetBool("ATK1", atk1);  
+                Enemigo.ReducirVida(25);
+                Reducir_Aumentar_Exp(-200);       
+            }
+            if(ataque ==3 && atkprocess == -1 && GameController.gameController.ExpJugador >= 200)
+            {
+                atk1 = true;
+                anim.SetBool("ATK1", atk1);  
+                Enemigo.ReducirVida(25);
+                Reducir_Aumentar_Exp(-200);         
+            }
+            if(ataque ==4 && atkprocess == -1 && GameController.gameController.ExpJugador >= 400)
+            {
+                atk1 = true;
+                anim.SetBool("ATK1", atk1);  
+                Enemigo.ReducirVida(25);
+                Reducir_Aumentar_Exp(-400);         
+            }
+            if(ataque ==5 && atkprocess == -1 && GameController.gameController.ExpJugador >= 500)
+            {
+                atk1 = true;
+                anim.SetBool("ATK1", atk1);  
+                Enemigo.ReducirVida(25);
+                Reducir_Aumentar_Exp(-500);          
+            }
+            if(ataque ==6 && atkprocess == -1 && GameController.gameController.ExpJugador >= 1000)
             {
                 atk2 = true;
                 anim.SetBool("ATK2", atk2);
-                Enemigo.ReducirVida(20);        
+                Enemigo.ReducirVida(25);
+                Reducir_Aumentar_Exp(-1000);        
             }
         }
-
-        
-
     }
 
     //Mueve al jugador cuando la animacion inicia y termina
@@ -64,8 +86,12 @@ public class PlayerController : MonoBehaviour
         if(x == -1)
         {
             GameController.gameController.Turno++;
-
         }
+    }
+
+    public void Reducir_Aumentar_Exp(int dano)
+    {
+        GameController.gameController.ExpJugador = GameController.gameController.ExpJugador + dano;
     }
     
 }

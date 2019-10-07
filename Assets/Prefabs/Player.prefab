@@ -192,5 +192,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7878520a3bd8f4c48b2b119f5933f265, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ataque: 0
   VidaJugador: 100
   Enemigo: {fileID: 5902662860471787046, guid: 3c54d669b44d48d469c545e3c4b6f070, type: 3}
