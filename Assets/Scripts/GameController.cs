@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
-public class GameController : MonoBehaviour
+using Photon.Pun;
+using System.IO;
+public class GameController : Photon.Pun.MonoBehaviourPun
 {
     public List<GameObject> Prefabs;
     public static GameController gameController;
@@ -12,8 +13,10 @@ public class GameController : MonoBehaviour
     public GameObject Enemigo; 
     public EnemyController EnemigoControl;
     public GameObject Jugador;
-    public PlayerController JugadorControl;
+    public PlayerController  JugadorControl;
     public GameObject Pregunta;
+    public GameObject Lobby;
+    public GameObject HUD;
     public Text textopregunta;
 
     public int Turno = 1;
@@ -28,12 +31,9 @@ public class GameController : MonoBehaviour
 
     void Start()
     {
-        gameController = this.GetComponent<GameController>();
-        Jugador = Instantiate(Prefabs[0]) as GameObject;
-        JugadorControl = Jugador.GetComponent<PlayerController>();
-        Enemigo = Instantiate(Prefabs[1]) as GameObject;
-        EnemigoControl = Enemigo.GetComponent<EnemyController>();
+
         random = Random.Range(0, 2);
+        
     }
     void FixedUpdate()
     {
@@ -44,8 +44,8 @@ public class GameController : MonoBehaviour
         }
         if(Turno == 2)
         {
+            
             Pregunta.SetActive(true);
-            //Debug.Log("pregunta =" +random);
             textopregunta.text = preguntas [random];
 
         }
@@ -60,6 +60,7 @@ public class GameController : MonoBehaviour
         } 
         exp.text = ("EXP: "+ ExpJugador.ToString());
         vida.text = ("VIDA: "+VidaEnemigo.ToString());
+        
     }
 
     public void mas_menos_Exp(int x)
@@ -79,9 +80,9 @@ public class GameController : MonoBehaviour
 
     public void pregunta(bool x)
     {
-        //Debug.Log("X="+ x);
-        //Debug.Log("respuesta random =" + random);
-        //Debug.Log("respuesta ="+ respuestas[random]);
+        JugadorControl.Reducir_Aumentar_Exp(-10);
+        EnemigoControl.Respuesta = 1;
+        
         if(x != respuestas[random])
         {
             JugadorControl.Reducir_Aumentar_Exp(-10);
@@ -93,6 +94,22 @@ public class GameController : MonoBehaviour
             EnemigoControl.Respuesta = -1;
         }
         random = Random.Range(0, 2);
+    }
+
+    public void inicializar(string PJ)
+    {
+        gameController = this.GetComponent<GameController>();
+        Jugador =PhotonNetwork.Instantiate(Path.Combine("Prefabs", PJ), new Vector3(7f,-5f,0), Quaternion.Euler(0,0,0)); //Jugador = Instantiate(Prefabs[1]) as GameObject;
+        JugadorControl = Jugador.GetComponent<PlayerController>();
+        Lobby.SetActive(false);
+        HUD.SetActive(true);
+    }
+
+    public void inicializar_enemigo()
+    {
+        Enemigo = PhotonNetwork.Instantiate(Path.Combine("Prefabs", "EnemigoMago"), new Vector3(-6.5f,-5f,0), Quaternion.Euler(0,0,0)) ;    //Enemigo = Instantiate(Prefabs[2]) as GameObject;
+        EnemigoControl = Enemigo.GetComponent<EnemyController>();
+
     }
 
 

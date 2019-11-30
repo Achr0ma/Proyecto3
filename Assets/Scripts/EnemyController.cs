@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyController : MonoBehaviour
+public class EnemyController : Photon.Pun.MonoBehaviourPun
 {
     private Animator anim ;
     //public PlayerController Jugador;

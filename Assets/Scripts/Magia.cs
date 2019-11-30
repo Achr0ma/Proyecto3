@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Magia : MonoBehaviour
+public class Magia : Photon.Pun.MonoBehaviourPun
 {
 
     private Animator anim ;
     public bool atk1magia;
+    public float animtime = 2;
 
     void Start()
     { 
@@ -15,7 +16,7 @@ public class Magia : MonoBehaviour
     void Update()
     {
         anim.SetBool("ATK1MAGIA", true);
-        Destroy(this.gameObject, (float) 5);
+        Destroy(this.gameObject, animtime);
 
     }
 
